@@ -36,6 +36,15 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """_summary_
+
+        Args:
+            page (int, optional): _description_. Defaults to 1.
+            page_size (int, optional): _description_. Defaults to 10.
+
+        Returns:
+            List[List]: _description_
+        """
         assert type(page) == int and type(page_size) == int
         assert page > 0 and page_size > 0
         if page_size * page > len(self.dataset()):

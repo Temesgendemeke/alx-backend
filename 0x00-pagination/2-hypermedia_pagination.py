@@ -4,7 +4,7 @@ Main file
 """
 import csv
 import math
-from typing import List
+from typing import List, Dict
 
 
 def index_range(page: int, page_size: int):
@@ -52,7 +52,7 @@ class Server:
         index = index_range(page, page_size)
         return self.dataset()[index[0]:index[1]]
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
         """" Returns a dictionary with the following key-value pairs"""
         return{
             'page_size': page_size,

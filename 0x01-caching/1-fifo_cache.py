@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """ 1-main """
 
+
 BaseCaching = __import__('base_caching').BaseCaching
+
+
 class FIFOCache():
     """ FIFOCache defines:
       - caching system

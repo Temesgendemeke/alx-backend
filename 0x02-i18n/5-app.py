@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Module for Task 0"""
-from flask import Flask, request, render_template
+from flask import Flask, request, g
 from flask_babel import Babel
 
 app = Flask(__name__)
@@ -34,18 +34,23 @@ users = {
 }
 
 
-def get_user():
-    """ define user"""
-    user = request.args.get('login_as')
-    if user in users:
-        return users[user]
-    return None
+def get_user(id):
+    """
+    Validate user login details
+    Args:
+        id (str): user id
+    Returns:
+        (Dict): user dictionary if id is valid else None
+    """
+    return users.get(int(id), 0)
 
 
 @app.before_request
 def before_request():
-    """ before request"""
-    Flask.g.user = get_user()
+    """
+    Adds valid user to the global session object `g`
+    """
+    setattr(g, 'user', get_user(request.args.get('login_as', 0)))
 
 
 @app.route('/')

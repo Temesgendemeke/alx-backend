@@ -26,7 +26,6 @@ def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
     2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
@@ -34,17 +33,19 @@ users = {
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
 
-def define_user():
+
+def get_user():
     """ define user"""
     user = request.args.get('login_as')
     if user in users:
         return users[user]
     return None
 
+
 @app.before_request
 def before_request():
     """ before request"""
-    Flask.g.user = define_user()
+    Flask.g.user = get_user()
 
 
 @app.route('/')

@@ -30,8 +30,9 @@ def get_locale():
 def index():
     '''default route
     '''
-    if request.args.get('locale') in app.config['LANGUAGES']:
-        return request.args.get('locale')
+    locale = request.args.get('locale', '').strip()
+    if locale and locale in Config.LANGUAGES:
+        return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 

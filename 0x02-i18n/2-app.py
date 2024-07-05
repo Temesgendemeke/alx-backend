@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Module for Task 0"""
-from flask import Flask, request, render_template,g
+from flask import Flask, request, render_template
 from flask_babel import Babel
 
 
@@ -21,4 +21,4 @@ babel = Babel(app)
 @babel.localeselector
 def get_locale():
     """ get locale"""
-    return request.accept_languages.best_match(app.config['LANGUAGES']) 
+    return request.accept_languages.best_match(app.config['LANGUAGES'])

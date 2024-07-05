@@ -31,9 +31,8 @@ def index():
     '''default route
     '''
     if request.args.get('locale') in app.config['LANGUAGES']:
-        return render_template("2-index.html")
-    else:
-        return None
+        return request.args.get('locale')
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 if __name__ == "__main__":

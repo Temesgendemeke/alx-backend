@@ -1,52 +1,67 @@
-#!/usr/bin/python3
-""" 100-main """
-
-
-BaseCaching = __import__('base_caching').BaseCaching
+#!/usr/bin/env python3
+"""
+Create a class LFUCache that inherits from BaseCaching
+and is a caching system:
+"""
+from base_caching import BaseCaching
+from datetime import datetime
 
 
 class LFUCache(BaseCaching):
-    """ LFUCache defines:
-      - caching system
+    """
+    This class will inherit self.cache_data from BaseCashing
     """
     def __init__(self):
-        """ Initiliaze
+        """
+        Init from BaseCaching
         """
         super().__init__()
-        self.queue = []
-        self.lfu = {}
+        self.cacheDict = {}
 
     def put(self, key, item):
-        """ Add an item in the cache
         """
-        if key and item:
-            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                if self.queue:
-                    discard = self.queue.pop(0)
-                    del self.cache_data[discard]
-                    del self.lfu[discard]
-                    print("DISCARD: {}".format(discard))
+        Adds key value pairs to self.cache_data
+        """
+        if key is not None and item is not None:
+            keyList = list(self.cache_data)[0:]
+            if key in keyList:
+                del self.cache_data[key]
+                keyList.remove(key)
+            if (len(keyList) + 1) > BaseCaching.MAX_ITEMS:
+                lfu = min(self.cacheDict.values())
+                for k, v in self.cacheDict.items():
+                    if v is lfu:
+                        remove = k
+                self.cacheDict.pop(k)
+                print("DISCARD: " + remove)
+                del self.cache_data[remove]
             self.cache_data[key] = item
-            if key in self.lfu:
-                self.lfu[key] += 1
-            else:
-                self.lfu[key] = 1
-            self.queue.append(key)
+            keyList.append(key)
+            self.cacheCache(key)
+
+        else:
+            pass
 
     def get(self, key):
-        """ Get an item by key
         """
-        if key in self.cache_data:
-            self.lfu[key] += 1
-            self.queue.remove(key)
-            self.queue.append(key)
+        Retrieves items from self.cache_data by key
+        """
+        keyList = list(self.cache_data)[0:]
+        if key in keyList:
+            self.put(key, self.cache_data[key])
             return self.cache_data[key]
-        return None
+        else:
+            pass
 
-    def print_cache(self):
-        """ Print the cache
+    def cacheCache(self, key):
         """
-        print("Current cache:")
-        for key in sorted(self.cache_data.keys()):
-            print("{}: {}".format(key, self.cache_data.get(key)))
-        print("LFU: {}".format(self.lfu))
+        Maintains a dict of keys and their # of uses
+        to check access for recently used
+        """
+
+        if key not in self.cacheDict.keys():
+            self.cacheDict[key] = 1
+        else:
+            for k, v in self.cacheDict.items():
+                if k is key:
+                    self.cacheDict[k] = v + 1
